@@ -1,0 +1,114 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "elixir_1_16@1.16.0": {
+      "last_modified": "2024-01-14T03:55:27Z",
+      "resolved": "github:NixOS/nixpkgs/dd5621df6dcb90122b50da5ec31c411a0de3e538#elixir_1_16",
+      "source": "devbox-search",
+      "version": "1.16.0",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/jb80krh7jnm8sjyhs4ap2ld8sva5l3q5-elixir-1.16.0"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/1df4zcjwpshf5sz05s2r1f1k4yjkvcxa-elixir-1.16.0"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/2m875dcj334hsq4vm38rhjwi8b0dk97s-elixir-1.16.0"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/jawv43fji0py1sqz2z8sllqm73hf2jm6-elixir-1.16.0"
+        }
+      }
+    },
+    "erlang_26@26.2.1": {
+      "last_modified": "2024-01-17T04:47:17Z",
+      "resolved": "github:NixOS/nixpkgs/757637581797f148c50977b6127147c5d298f9e9#erlang_26",
+      "source": "devbox-search",
+      "version": "26.2.1",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/zxa7pa1y25hzkz2gjirzl0j9blv399al-erlang-26.2.1"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/sf8dflmmh7rk7zzwwsbh7049g39kz63k-erlang-26.2.1"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/7jazbh8k0z3ybpnmk8wd4zglwm99l89c-erlang-26.2.1"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/vwmx4pszxyra9mg1bjkw2aa2h9yg7g3b-erlang-26.2.1"
+        }
+      }
+    },
+    "gigalixir@latest": {
+      "last_modified": "2024-01-14T03:55:27Z",
+      "resolved": "github:NixOS/nixpkgs/dd5621df6dcb90122b50da5ec31c411a0de3e538#gigalixir",
+      "source": "devbox-search",
+      "version": "1.6.0",
+      "systems": {
+        "aarch64-linux": {
+          "store_path": "/nix/store/kfjvgjkrvirwszllmwcsbq5qvq8ak4mv-gigalixir-1.6.0"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/304bwpx4lqrm69a1mbwk2gn5b48vpm29-gigalixir-1.6.0"
+        }
+      }
+    },
+    "glibcLocales@latest": {
+      "last_modified": "2024-01-14T03:55:27Z",
+      "resolved": "github:NixOS/nixpkgs/dd5621df6dcb90122b50da5ec31c411a0de3e538#glibcLocales",
+      "source": "devbox-search",
+      "version": "2.38-27",
+      "systems": {
+        "aarch64-linux": {
+          "store_path": "/nix/store/i0aff1lm1js9j9ggw7js7n5869bfxm6z-glibc-locales-2.38-27"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/wyl74hap7bh513hp3rz1j608gs7267af-glibc-locales-2.38-27"
+        }
+      }
+    },
+    "nodejs@21.6.0": {
+      "last_modified": "2024-01-17T15:31:30Z",
+      "resolved": "github:NixOS/nixpkgs/f36047a5a4b5631f75210859abac7f97ba1ba7a7#nodejs_21",
+      "source": "devbox-search",
+      "version": "21.6.0",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/21jp6aq08m7yx8qg5029pq69dsfg1rbd-nodejs-21.6.0"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/l6jyw0mw8dx71f3d45pr66sjg2agidjr-nodejs-21.6.0"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/wpjx3mxwa8ldbvlf0kr0d9li9inp343n-nodejs-21.6.0"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/plhc6valzwyddhjv5jc2mdvbhjxyxa84-nodejs-21.6.0"
+        }
+      }
+    },
+    "postgresql@latest": {
+      "last_modified": "2024-01-17T15:31:30Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/f36047a5a4b5631f75210859abac7f97ba1ba7a7#postgresql",
+      "source": "devbox-search",
+      "version": "15.5",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/lswayza3s4yqmlvzq13cx3fzxzsgwpda-postgresql-15.5"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/90cn8xnvxl2ii2zhyf8x0rg1srhwkxa0-postgresql-15.5"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/hj40jqlylhd09rvfgc3igdlrpc7w17nn-postgresql-15.5"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/0wzmqzp0mmz752gzr9pqc0dw3dsdszsw-postgresql-15.5"
+        }
+      }
+    }
+  }
+}
