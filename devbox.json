@@ -5,7 +5,8 @@
     "postgresql@latest",
     "elixir_1_16@1.16.0",
     "erlang_26@26.2.1",
-    "nodejs@21.6.0"
+    "nodejs@21.6.0",
+    "elixir-ls@latest"
   ],
   "shell": {
     "init_hook": [
