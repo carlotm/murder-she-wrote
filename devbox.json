@@ -2,7 +2,6 @@
   "packages": [
     "gigalixir@latest",
     "glibcLocales@latest",
-    "postgresql@latest",
     "elixir_1_16@1.16.0",
     "erlang_26@26.2.1",
     "nodejs@21.6.0",

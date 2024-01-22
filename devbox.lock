@@ -108,27 +108,6 @@
           "store_path": "/nix/store/plhc6valzwyddhjv5jc2mdvbhjxyxa84-nodejs-21.6.0"
         }
       }
-    },
-    "postgresql@latest": {
-      "last_modified": "2024-01-17T15:31:30Z",
-      "plugin_version": "0.0.2",
-      "resolved": "github:NixOS/nixpkgs/f36047a5a4b5631f75210859abac7f97ba1ba7a7#postgresql",
-      "source": "devbox-search",
-      "version": "15.5",
-      "systems": {
-        "aarch64-darwin": {
-          "store_path": "/nix/store/lswayza3s4yqmlvzq13cx3fzxzsgwpda-postgresql-15.5"
-        },
-        "aarch64-linux": {
-          "store_path": "/nix/store/90cn8xnvxl2ii2zhyf8x0rg1srhwkxa0-postgresql-15.5"
-        },
-        "x86_64-darwin": {
-          "store_path": "/nix/store/hj40jqlylhd09rvfgc3igdlrpc7w17nn-postgresql-15.5"
-        },
-        "x86_64-linux": {
-          "store_path": "/nix/store/0wzmqzp0mmz752gzr9pqc0dw3dsdszsw-postgresql-15.5"
-        }
-      }
     }
   }
 }

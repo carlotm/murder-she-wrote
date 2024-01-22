@@ -18,7 +18,7 @@ defmodule MswWeb.Router do
     pipe_through [:browser]
 
     live_session :default do
-      live "/", Liveviews.Homepage, :index
+      live "/", Liveviews.Homepage
     end
   end
 
