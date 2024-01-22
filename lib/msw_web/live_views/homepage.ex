@@ -14,11 +14,11 @@ defmodule MswWeb.Liveviews.Homepage do
   def render(assigns) do
     ~H"""
     Hello live view!
-    <ul :for={{id, n, _, _, _} <- @all_seasons}>
+    <ul :for={{id, n} <- @all_seasons}>
       <li>Season <%= n %> (id <%= id %>)</li>
     </ul>
     <hr>
-    <ul :for={{_id, n, _, title, _plot, _poster, season_id, _, _} <- @all_episodes}>
+    <ul :for={{_id, n, title, _plot, _poster, season_id} <- @all_episodes}>
       <li>e<%= n %>s<%= season_id %> - <%= title %></li>
     </ul>
     """

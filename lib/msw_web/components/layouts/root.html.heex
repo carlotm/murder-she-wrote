@@ -4,14 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "Msw" %>
-    </.live_title>
+
+    <title>Murder She Wrote - The Killers</title>
+
+
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
+
+    <link
+      href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABUVmH/UlRe/0dXfv87THL/FyI4/xIaLf8qMkr/UFVp/4OAjf+Zj5z/YGRv/1ZUXv9ZV13/PDpA/0pITv9iWmH/VFZh/1JUX/9aY3//WWaS/0ZXgv9WZZT/XWSV/2Nqm/9ucZP/pJml/356hv9RUlv/W1lf/1FPVf9cWmD/Zl5l/1pcZ/9UVmH/TVBe/1RZbv9MWYP/W2ua/1Bfj/9PVob/V2GR/6Wbqv9mYGn/Wlhe/19dY/9dW2H/WVdd/2VdZP8tP1b/Vlll/1JTXv9QUV3/iYWW/2Zxl/9QXI3/WWKY/xsiVP+ala//p56p/6afpv9lX2b/YmBm/1tZX/9GRkv/DiJI/y44Rf9UVmH/U1Vg/3dyfv+poK3/UVpy/01Tev81Pmn/aHKc/6OdqP+Ti5T/Xlpg/19dY/9cWmD/OztL/xUlNv8fLTn/VFdj/1VXYv9SVGL/ZWt6/0FTc/88SHf/QUt0/0JOdv+gmaf/fHSA/15cZP9cWmD/Y15k/zkoIf8TIjL/Hy09/1JYZf9UVmH/O0FM/zE6WP9UYZL/VFuM/1phk/9BS3X/mpCg/2Vea/9UU13/RUdP/yIfI/8oFA//Bw8g/yErO/8gMDv/ERgj/xEaJv9GVXn/TVaC/19omP9ZYY3/TluD/2lmd/8fIiz/DQ8Y/xwmNf8RFR//Fw4P/wURIf8bJTX/ERws/wgWKv8PIDn/SlR9/1ljjv9ZaZj/RFJ4/0BQdv8aITn/CwsS/wkMEv8dJDb/Cw4b/x8lPv8HDxn/JzFA/yk0Sv8YKEL/ITZU/zdKb/8+T3n/Tl6O/1Njk/8tP2n/GStH/xEWJv8ICxX/CQ0S/wkNEv8ZHTP/CREb/0hQYP8pM0X/GitC/y5DYv8hNVj/FytO/xkoR/8bL0//HzRS/yk7V/8UGir/Cw0Y/wsNF/8KDBf/CAkU/wAJE/9QV2f/JjE+/yMtQP8wRGT/L0Nl/zNIZv8XKkb/HjRQ/xwyTv8rPlj/DQ4c/w4QG/8KDBf/DA4Z/wkLFv8IDhb/XmVy/yk1Pv8QFyL/L0Bf/zlLav8wRmL/JjxY/yI0Uf8kOFT/JTJH/wYGEP8PEh7/Cg0V/w4QG/8LDRj/CQ4V/2Rtdv8lMjn/Cg4V/xIaJv80RF3/Mklm/zFEYf86R2P/O01g/w8THf8HCA7/DREb/wsNE/8MDhf/Cw4Z/w0WIP9tdX//Iy84/wgRGP8ICw3/BwoQ/x8nMf8+T2D/RVNh/01aaf8HBwz/BwgM/wgKD/8FBAn/BwsP/woRGv8MFR//ZGt1/xgjLf8FCxP/CAsO/wECA/8QFBn/Q1Nc/0dTY/9MWGf/CQsN/wICAv8DAwP/AgIC/wICAv8JChL/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      rel="icon"
+      type="image/x-icon"
+    />
   </head>
-  <body class="bg-white antialiased">
+  <body>
+    <header class="SiteHeader">
+      <h1><a href="/">Murder She Wrote</a></h1>
+      <h2>the killers</h2>
+    </header>
     <%= @inner_content %>
+    <footer class="SiteFooter">
+      <p>
+        "Murder She Wrote - The Killers" has been designed, developed and
+        deployed by <a href="https://tilde.club/~carloratm">Carlo Ascani</a>.
+      </p>
+    </footer>
   </body>
 </html>
