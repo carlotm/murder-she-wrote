@@ -30,12 +30,14 @@ defmodule MswWeb.Liveviews.Homepage do
     />
     <section class="Episodes">
       <MswWeb.Components.episode
-        :for={{_id, n, t, pl, po, sid} <- @filtered}
+        :for={{id, n, t, pl, po, sid} <- @filtered}
+        id={id}
         title={t}
         poster={po}
         plot={pl}
         number={n}
         season_id={sid}
+        killer={@killer}
       />
     </section>
     """
@@ -67,10 +69,18 @@ defmodule MswWeb.Liveviews.Homepage do
     {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
   end
 
+  def handle_event("reveal", %{"value" => episode_id}, socket) do
+    {:noreply, assign(socket, killer: Msw.DB.killer_of(episode_id))}
+  end
+
+  def handle_event("unreveal", _, socket) do
+    {:noreply, assign(socket, killer: nil)}
+  end
+
   def handle_info({:filter, filters}, socket) do
     {:noreply,
      assign(socket,
-       filtered: Msw.DB.filter(:episodes, filters),
+       filtered: Msw.DB.filter_episodes(filters),
        loading: false
      )}
   end

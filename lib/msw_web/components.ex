@@ -2,21 +2,33 @@ defmodule MswWeb.Components do
   @moduledoc false
   use Phoenix.Component
 
+  attr :id, :integer, required: true
   attr :title, :string, default: ""
   attr :plot, :string, default: ""
   attr :poster, :string, default: nil
   attr :number, :integer, default: 1
   attr :season_id, :integer, default: 1
+  attr :revealable, :boolean, default: true
+  attr :killer, :any, default: nil
 
-  def episode(%{poster: poster, season_id: season_id, number: number} = assigns) do
+  def episode(
+        %{id: id, poster: poster, season_id: season_id, number: number, killer: killer} = assigns
+      ) do
     assigns =
       assign(assigns,
         bg_url: "/images/covers/#{poster}",
-        episode_id: "s#{season_id}e#{number}"
+        episode_id: "s#{season_id}e#{number}",
+        killer_revealed: killer != nil and elem(killer, 2) == id
       )
 
     ~H"""
-    <article id={@episode_id} class="Episode">
+    <article
+      id={@episode_id}
+      class={[
+        "Episode",
+        @killer_revealed && "Episode-reveal"
+      ]}
+    >
       <div class="Episode-front">
         <div :if={@poster} class="Episode-poster" style={"background-image: url(#{@bg_url});"} />
         <header>
@@ -38,12 +50,28 @@ defmodule MswWeb.Components do
           <p>Season <%= @season_id %></p>
           <p>Episode <%= @number %></p>
         </footer>
+        <aside :if={@revealable} class="Episode-cta">
+          <button phx-click="reveal" value={@id}>Reveal Killer</button>
+        </aside>
+      </div>
+      <div :if={@revealable} class="Episode-back Episode-killer">
+        <%= if @killer_revealed do %>
+          <% {_, name, _, pic} = @killer %>
+          <img
+            src={"data:image/jpeg;base64,#{pic}"}
+            title={name}
+            alt={name}
+            class="Episode-killer_image"
+          />
+          <p class="Episode-killer_name"><%= name %></p>
+          <button class="Episode-killer_unreveal" phx-click="unreveal">hide</button>
+        <% end %>
       </div>
     </article>
     """
   end
 
-  attr :loading, :boolean, default: :false
+  attr :loading, :boolean, default: false
   attr :q, :string, default: ""
   attr :seasons, :list, default: []
   attr :selected_seasons, :list, default: []
@@ -68,7 +96,7 @@ defmodule MswWeb.Components do
         </div>
         <div class="Filter">
           <h3 class="Filter-name">Filter episodes by season</h3>
-          <input type="hidden" value="" name="seasons[]">
+          <input type="hidden" value="" name="seasons[]" />
           <%= for {_, number} <- @seasons do %>
             <input
               type="checkbox"

@@ -23,12 +23,20 @@ defmodule Msw.DB do
     :ets.tab2list(table)
   end
 
-  def filter(table, filters \\ %{}) do
-    table
+  def filter_episodes(filters \\ %{}) do
+    :episodes
     |> :ets.tab2list()
     |> Enum.filter(fn {_id, _number, title, _plot, _poster, season_id} ->
       by_season(filters, season_id) and by_title(filters, title)
     end)
+  end
+
+  def killer_of(episode_id) do
+    episode_id = String.to_integer(episode_id)
+    [killer] = :ets.select(:killers, [
+      {{:_, :_, :"$1", :_}, [{:==, :"$1", {:const, episode_id}}], [:"$_"]}
+    ])
+    killer
   end
 
   #
