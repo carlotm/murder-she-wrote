@@ -2,28 +2,52 @@ defmodule Msw.DB do
   use GenServer
 
   @name __MODULE__
+  @fields_to_int ["id", "season_id", "episode_id"]
+  @data %{
+    seasons: ["id", "number"],
+    episodes: ["id", "number", "title", "plot", "poster", "season_id"],
+    killers: ["id", "name", "episode_id", "picture64"]
+  }
 
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: @name)
 
   def init(_) do
-    :ets.new(:episodes, [:ordered_set, :protected, :named_table])
-    :ets.new(:seasons, [:ordered_set, :protected, :named_table])
-    :ets.new(:killers, [:ordered_set, :protected, :named_table])
+    Enum.each(@data, fn {k, _} ->
+      :ets.new(k, [:ordered_set, :protected, :named_table])
+    end)
 
-    {:ok, [:episodes, :seasons, :killers], {:continue, :load}}
+    {:ok, @data, {:continue, :load}}
   end
+
+  def fetch_all(table) do
+    :ets.tab2list(table)
+  end
+
+  #
+  # Private
+  #
 
   def handle_continue(:load, tables) do
     Enum.each(tables, &load/1)
     {:noreply, tables}
   end
 
-  defp load(k) do
-    Application.app_dir(:msw, "priv/data/" <> Atom.to_string(k) <> ".csv")
+  defp load({table, fields}) do
+    Application.app_dir(:msw, "priv/data/#{Atom.to_string(table)}.csv")
     |> File.stream!()
     |> CSV.decode!(headers: true)
-    |> Stream.map(&Map.values/1)
-    |> Enum.map(&List.to_tuple/1)
-    |> then(&:ets.insert(k, &1))
+    |> Enum.map(&csv_row_to_tuple(&1, fields))
+    |> then(&:ets.insert(table, &1))
+  end
+
+  defp csv_row_to_tuple(row, fields) do
+    Enum.reduce(fields, {}, fn
+      field, acc when field in @fields_to_int ->
+        {n, _} = Map.get(row, field) |> Integer.parse()
+        Tuple.append(acc, n)
+
+      field, acc ->
+        Tuple.append(acc, Map.get(row, field))
+    end)
   end
 end

@@ -4,8 +4,8 @@ defmodule MswWeb.Liveviews.Homepage do
   def mount(_params, _session, socket) do
     socket =
       assign(socket,
-        all_episodes: Msw.fetch_all(:episodes),
-        all_seasons: Msw.fetch_all(:seasons)
+        all_episodes: Msw.DB.fetch_all(:episodes),
+        all_seasons: Msw.DB.fetch_all(:seasons)
       )
 
     {:ok, socket}
