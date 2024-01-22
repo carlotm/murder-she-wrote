@@ -19,7 +19,6 @@ defmodule MswWeb.Liveviews.Homepage do
     </ul>
     <hr>
     <ul :for={{_id, n, _, title, _plot, _poster, season_id, _, _} = r <- @all_episodes}>
-      <% IO.inspect r %>
       <li>e<%= n %>s<%= season_id %> - <%= title %></li>
     </ul>
     """
