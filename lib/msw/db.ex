@@ -21,7 +21,8 @@ defmodule Msw.DB do
   defp load(k) do
     Application.app_dir(:msw, "priv/data/" <> Atom.to_string(k) <> ".csv")
     |> File.stream!()
-    |> CSV.decode!()
+    |> CSV.decode!(headers: true)
+    |> Stream.map(&Map.values/1)
     |> Enum.map(&List.to_tuple/1)
     |> then(&:ets.insert(k, &1))
   end

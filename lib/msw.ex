@@ -1,9 +1,7 @@
 defmodule Msw do
-  @moduledoc """
-  Msw keeps the contexts that define your domain
-  and business logic.
+  @moduledoc false
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  def fetch_all(table) do
+    :ets.tab2list(table)
+  end
 end
