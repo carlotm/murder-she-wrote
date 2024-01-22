@@ -18,7 +18,7 @@ defmodule MswWeb.Liveviews.Homepage do
       <li>Season <%= n %> (id <%= id %>)</li>
     </ul>
     <hr>
-    <ul :for={{_id, n, _, title, _plot, _poster, season_id, _, _} = r <- @all_episodes}>
+    <ul :for={{_id, n, _, title, _plot, _poster, season_id, _, _} <- @all_episodes}>
       <li>e<%= n %>s<%= season_id %> - <%= title %></li>
     </ul>
     """
