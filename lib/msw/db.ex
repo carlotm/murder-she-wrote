@@ -6,9 +6,9 @@ defmodule Msw.DB do
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: @name)
 
   def init(_) do
-    :ets.new(:episodes, [:set, :protected, :named_table])
-    :ets.new(:seasons, [:set, :protected, :named_table])
-    :ets.new(:killers, [:set, :protected, :named_table])
+    :ets.new(:episodes, [:ordered_set, :protected, :named_table])
+    :ets.new(:seasons, [:ordered_set, :protected, :named_table])
+    :ets.new(:killers, [:ordered_set, :protected, :named_table])
 
     {:ok, [:episodes, :seasons, :killers], {:continue, :load}}
   end
