@@ -118,6 +118,7 @@ defmodule MswWeb.Components do
 
   attr :killers, :list, default: []
   attr :guess, :boolean, default: nil
+  attr :for, :any, default: nil
 
   def killer_chooser(assigns) do
     ~H"""
@@ -130,15 +131,15 @@ defmodule MswWeb.Components do
         cta_label="Try another episode"
         message="Bingo!"
       />
-      <label :for={{id, name, episode_id, picture} <- @killers} for={"k#{id}"}>
+      <label :for={{id, name, _episode_id, picture} <- @killers} for={"k#{id}"}>
         <div
           class="KillerChooser-picture"
           style={"background-image: url('data:image/jpeg;base64,#{picture}')"}
         />
         <span class="KillerChooser-text"><%= name %></span>
-        <input type="hidden" value={episode_id} name="episode" />
         <input id={"k#{id}"} name="guessed" value={id} type="radio" />
       </label>
+      <input type="hidden" value={@for} name="episode" />
     </form>
     """
   end
