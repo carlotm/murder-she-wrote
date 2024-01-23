@@ -1,5 +1,6 @@
 defmodule MswWeb.Liveviews.Homepage do
   use Phoenix.LiveView
+
   use Phoenix.VerifiedRoutes,
     endpoint: MswWeb.Endpoint,
     router: MswWeb.Router
@@ -63,10 +64,13 @@ defmodule MswWeb.Liveviews.Homepage do
 
   def handle_event("filter", %{"q" => q, "seasons" => seasons}, socket) do
     filters = %{q: q, seasons: seasons}
-    send(self(), {:filter, filters})
     socket = assign(socket, filters: filters, loading: true)
     qs = %{q: q, seasons: Enum.join(tl(seasons), ",")}
-    {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
+
+    {:noreply,
+     socket
+     |> assign(filtered: Msw.DB.filter_episodes(filters), loading: false)
+     |> push_patch(to: ~p"/?#{qs}")}
   end
 
   def handle_event("reveal", %{"value" => episode_id}, socket) do
@@ -75,13 +79,5 @@ defmodule MswWeb.Liveviews.Homepage do
 
   def handle_event("unreveal", _, socket) do
     {:noreply, assign(socket, killer: nil)}
-  end
-
-  def handle_info({:filter, filters}, socket) do
-    {:noreply,
-     assign(socket,
-       filtered: Msw.DB.filter_episodes(filters),
-       loading: false
-     )}
   end
 end
