@@ -33,9 +33,12 @@ defmodule Msw.DB do
 
   def killer_of(episode_id) do
     episode_id = String.to_integer(episode_id)
-    [killer] = :ets.select(:killers, [
-      {{:_, :_, :"$1", :_}, [{:==, :"$1", {:const, episode_id}}], [:"$_"]}
-    ])
+
+    [killer] =
+      :ets.select(:killers, [
+        {{:_, :_, :"$1", :_}, [{:==, :"$1", {:const, episode_id}}], [:"$_"]}
+      ])
+
     killer
   end
 

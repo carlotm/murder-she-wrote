@@ -46,7 +46,9 @@ defmodule MswWeb.Liveviews.Episodes do
 
   def handle_params(%{"q" => q, "seasons" => seasons}, _, socket) do
     filters = %{q: q, seasons: seasons}
-    {:noreply, assign(socket, filters: filters, filtered: Msw.DB.filter_episodes(filters), loading: false)}
+
+    {:noreply,
+     assign(socket, filters: filters, filtered: Msw.DB.filter_episodes(filters), loading: false)}
   end
 
   def handle_params(_, _, socket), do: {:noreply, assign(socket, loading: false)}
