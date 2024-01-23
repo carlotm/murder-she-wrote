@@ -8,7 +8,7 @@ defmodule MswWeb.Liveviews.Guess do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       [{episode_id, number, title, plot, poster, season_id}] = Msw.DB.random(:episodes)
-      killer = Msw.DB.killer_of(number)
+      killer = Msw.DB.killer_of(episode_id)
 
       {:ok,
        socket
@@ -27,6 +27,23 @@ defmodule MswWeb.Liveviews.Guess do
     end
   end
 
+  def handle_event("guessed", %{"guessed" => killer_id, "episode" => eid}, socket) do
+    episode_id = Msw.DB.lookup(:killers, killer_id, 3)
+    IO.inspect({episode_id, eid})
+    # {:noreply, assign(socket, :guess, "#{guessed.episode_id}" == eid)}
+    {:noreply, socket}
+  end
+
+  def handle_event("again", %{"value" => "guess"}, socket) do
+    # {:noreply, assign(socket, :guess, nil)}
+    {:noreply, socket}
+  end
+
+  def handle_event("again", %{"value" => "reset"}, socket) do
+    # {:noreply, assign(socket, random_episode_and_killers())}
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <section class="GuessEpisode">
@@ -41,10 +58,7 @@ defmodule MswWeb.Liveviews.Guess do
           season_id={@season_id}
           revealable={false}
         />
-        <MswWeb.Components.killer_chooser
-          killers={@killers}
-          guess={@guess}
-        />
+        <MswWeb.Components.killer_chooser killers={@killers} guess={@guess} />
         <p class="GuessEpisode-study">
           Let's study! <.link navigate={~p"/"}>Browse the episodes</.link>
         </p>

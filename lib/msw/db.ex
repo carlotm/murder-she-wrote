@@ -38,14 +38,20 @@ defmodule Msw.DB do
   end
 
   def killer_of(episode_id) do
-    episode_id = String.to_integer(episode_id)
-
     [killer] =
       :ets.select(:killers, [
         {{:_, :_, :"$1", :_}, [{:==, :"$1", {:const, episode_id}}], [:"$_"]}
       ])
 
     killer
+  end
+
+  def lookup(table, k, pos \\ -1) when is_binary(k) do
+    k = String.to_integer(k)
+    case pos do
+      -1 -> :ets.lookup(table, k)
+      n -> :ets.lookup_element(table, k, n)
+    end
   end
 
   #

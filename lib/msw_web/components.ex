@@ -117,36 +117,50 @@ defmodule MswWeb.Components do
   end
 
   attr :killers, :list, default: []
-  attr :guess, :any, default: nil
+  attr :guess, :boolean, default: nil
 
   def killer_chooser(assigns) do
     ~H"""
     <form class="KillerChooser" phx-change="guessed">
-      <%!--
-        <.live_component
-          module={UI.KillerGuessResult}
-          id="guess-failed"
-          bg="fail.gif"
-          active={@guess == false}
-          cta={{"guess", "Guess again"}}
-          message="Nope"
-        />
-        <.live_component
-          module={UI.KillerGuessResult}
-          id="guess-success"
-          bg="success.gif"
-          active={@guess == true}
-          cta={{"reset", "Try another episode"}}
-          message="Bingo!"
-        />
-        --%>
+      <.killer_guess_result active={@guess == false} />
+      <.killer_guess_result
+        bg="success.gif"
+        active={@guess == true}
+        cta_value="reset"
+        cta_label="Try another episode"
+        message="Bingo!"
+      />
       <label :for={{id, name, episode_id, picture} <- @killers} for={"k#{id}"}>
-        <div class="KillerChooser-picture" style={"background-image: url('data:image/jpeg;base64,#{picture}')"} />
+        <div
+          class="KillerChooser-picture"
+          style={"background-image: url('data:image/jpeg;base64,#{picture}')"}
+        />
         <span class="KillerChooser-text"><%= name %></span>
         <input type="hidden" value={episode_id} name="episode" />
         <input id={"k#{id}"} name="guessed" value={id} type="radio" />
       </label>
     </form>
+    """
+  end
+
+  attr :active, :boolean, default: false
+  attr :message, :string, default: "Nope"
+  attr :cta_value, :string, default: "guess"
+  attr :cta_label, :string, default: "Guess again"
+  attr :bg, :string, default: "fail.gif"
+
+  def killer_guess_result(assigns) do
+    ~H"""
+    <div
+      class="KillerChooser-panel"
+      style={"background-image: url('/images/#{@bg}')"}
+      data-active={@active}
+    >
+      <p><%= @message %></p>
+      <button phx-click="again" value={@cta_value} type="button">
+        <%= @cta_label %>
+      </button>
+    </div>
     """
   end
 end
