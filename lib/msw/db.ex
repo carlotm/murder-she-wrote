@@ -31,6 +31,12 @@ defmodule Msw.DB do
     end)
   end
 
+  def random(table, n \\ 1) do
+    table
+    |> :ets.tab2list()
+    |> Enum.take_random(n)
+  end
+
   def killer_of(episode_id) do
     episode_id = String.to_integer(episode_id)
 

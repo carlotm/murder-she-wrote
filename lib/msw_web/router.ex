@@ -19,6 +19,7 @@ defmodule MswWeb.Router do
 
     live_session :default do
       live "/", Liveviews.Episodes
+      live "/guess", Liveviews.Guess
     end
   end
 

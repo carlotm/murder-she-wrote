@@ -115,4 +115,38 @@ defmodule MswWeb.Components do
     </section>
     """
   end
+
+  attr :killers, :list, default: []
+  attr :guess, :any, default: nil
+
+  def killer_chooser(assigns) do
+    ~H"""
+    <form class="KillerChooser" phx-change="guessed">
+      <%!--
+        <.live_component
+          module={UI.KillerGuessResult}
+          id="guess-failed"
+          bg="fail.gif"
+          active={@guess == false}
+          cta={{"guess", "Guess again"}}
+          message="Nope"
+        />
+        <.live_component
+          module={UI.KillerGuessResult}
+          id="guess-success"
+          bg="success.gif"
+          active={@guess == true}
+          cta={{"reset", "Try another episode"}}
+          message="Bingo!"
+        />
+        --%>
+      <label :for={{id, name, episode_id, picture} <- @killers} for={"k#{id}"}>
+        <div class="KillerChooser-picture" style={"background-image: url('data:image/jpeg;base64,#{picture}')"} />
+        <span class="KillerChooser-text"><%= name %></span>
+        <input type="hidden" value={episode_id} name="episode" />
+        <input id={"k#{id}"} name="guessed" value={id} type="radio" />
+      </label>
+    </form>
+    """
+  end
 end
