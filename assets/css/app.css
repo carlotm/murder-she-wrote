@@ -611,6 +611,37 @@ h2
   flex: 1 1 auto;
 }
 
+.LinkGuess
+{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--oro);
+    text-decoration: none;
+    color: var(--asfalto-dd);
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-align: center;
+    border-radius: 50%;
+    height: 8rem;
+    width: 8rem;
+    text-transform: uppercase;
+    left: -8rem;
+    top: -4rem;
+    transform: rotate(-20deg);
+    z-index: 999;
+    box-shadow: 0 0 0 0 transparent;
+    transition: transform .2s ease-out, box-shadow .2s ease-out;
+}
+
+.LinkGuess:hover
+{
+    transform: rotate(0deg);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+}
+
 .Spinner
 {
   height: calc(var(--aria4x) + 32px + var(--aria4x));
@@ -858,5 +889,13 @@ h2
   .GuessEpisode .KillerChooser
   {
     flex: 0 0 100%;
+  }
+
+  .LinkGuess
+  {
+    left: var(--aria);
+    font-size: 1rem;
+    width: 5rem;
+    height: 5rem;
   }
 }

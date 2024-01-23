@@ -79,6 +79,11 @@ defmodule MswWeb.Components do
   def filters(assigns) do
     ~H"""
     <section class="Filters">
+      <.link navigate="/guess" class="LinkGuess">
+        <span>Guess</span>
+        <span>the</span>
+        <span>killer</span>
+      </.link>
       <form id="Filters-form" phx-change="filter">
         <div class="Filter">
           <label class="Filter-name" for="q">
