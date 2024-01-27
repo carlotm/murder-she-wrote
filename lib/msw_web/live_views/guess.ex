@@ -43,13 +43,13 @@ defmodule MswWeb.Liveviews.Guess do
   end
 
   defp assign_random_episode_and_killers(socket) do
-    [{_, episode}] = Msw.DB.random(:episodes)
+    [{_, episode}] = Msw.DB.random(Msw.Episode)
     killer = Msw.DB.killer_of(episode.ref)
 
     assign(
       socket,
       episode: episode,
-      killers: [killer | Msw.DB.random(:killers, 3)] |> Enum.shuffle(),
+      killers: [killer | Msw.DB.random(Msw.Killer, 3)] |> Enum.shuffle(),
       guess: nil
     )
   end

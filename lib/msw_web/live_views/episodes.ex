@@ -12,8 +12,8 @@ defmodule MswWeb.Liveviews.Episodes do
           q: "",
           seasons: []
         },
-        seasons: Msw.DB.fetch_all(:seasons),
-        filtered: Msw.DB.fetch_all(:episodes),
+        seasons: Msw.DB.fetch_all(Msw.Season),
+        filtered: Msw.DB.fetch_all(Msw.Episode),
         killer: nil,
         loading: true
       )
