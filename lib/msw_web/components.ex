@@ -2,68 +2,60 @@ defmodule MswWeb.Components do
   @moduledoc false
   use Phoenix.Component
 
-  attr :id, :integer, required: true
-  attr :title, :string, default: ""
-  attr :plot, :string, default: ""
-  attr :poster, :string, default: nil
-  attr :number, :integer, default: 1
-  attr :season_id, :integer, default: 1
+  attr :episode, Msw.Episode, required: true
+  attr :killer, Msw.Killer, default: nil
   attr :revealable, :boolean, default: true
-  attr :killer, :any, default: nil
 
-  def episode(
-        %{id: id, poster: poster, season_id: season_id, number: number, killer: killer} = assigns
-      ) do
+  def episode(%{episode: episode, killer: killer} = assigns) do
     assigns =
       assign(assigns,
-        bg_url: "/images/covers/#{poster}",
-        episode_id: "s#{season_id}e#{number}",
-        killer_revealed: killer != nil and elem(killer, 2) == id
+        killer_revealed: false,
+        bg_url: "background-image: url(/images/covers/#{episode.poster})",
+        killer_revealed: killer != nil and killer.episode_ref == episode.ref
       )
 
     ~H"""
     <article
-      id={@episode_id}
+      id={@episode.id}
       class={[
         "Episode",
         @killer_revealed && "Episode-reveal"
       ]}
     >
       <div class="Episode-front">
-        <div :if={@poster} class="Episode-poster" style={"background-image: url(#{@bg_url});"} />
+        <div :if={@episode.poster} class="Episode-poster" style={@bg_url} />
         <header>
-          <h2 class="Episode-title"><%= @title %></h2>
+          <h2 class="Episode-title"><%= @episode.title %></h2>
         </header>
         <section>
           <input
-            id={"#{@episode_id}-plot"}
+            id={"#{@episode.id}-plot"}
             type="checkbox"
             title="Toggle plot visibility"
             class="Episode-plot_toggler"
           />
-          <label for={"#{@episode_id}-plot"} class="Episode-plot_label">
+          <label for={"#{@episode.id}-plot"} class="Episode-plot_label">
             Plot
           </label>
-          <p class="Episode-plot"><%= @plot %></p>
+          <p class="Episode-plot"><%= @episode.plot %></p>
         </section>
         <footer class="Episode-foot">
-          <p>Season <%= @season_id %></p>
-          <p>Episode <%= @number %></p>
+          <p>Season <%= @episode.season_id %></p>
+          <p>Episode <%= @episode.number %></p>
         </footer>
         <aside :if={@revealable} class="Episode-cta">
-          <button phx-click="reveal" value={@id}>Reveal Killer</button>
+          <button phx-click="reveal" value={@episode.ref}>Reveal Killer</button>
         </aside>
       </div>
       <div :if={@revealable} class="Episode-back Episode-killer">
         <%= if @killer_revealed do %>
-          <% {_, name, _, pic} = @killer %>
           <img
-            src={"data:image/jpeg;base64,#{pic}"}
-            title={name}
-            alt={name}
+            src={"data:image/jpeg;base64,#{@killer.picture64}"}
+            title={@killer.name}
+            alt={@killer.name}
             class="Episode-killer_image"
           />
-          <p class="Episode-killer_name"><%= name %></p>
+          <p class="Episode-killer_name"><%= @killer.name %></p>
           <button class="Episode-killer_unreveal" phx-click="unreveal">hide</button>
         <% end %>
       </div>
@@ -102,7 +94,7 @@ defmodule MswWeb.Components do
         <div class="Filter">
           <h3 class="Filter-name">Filter episodes by season</h3>
           <input type="hidden" value="" name="seasons[]" />
-          <%= for {_, number} <- @seasons do %>
+          <%= for {_, %{number: number}} <- @seasons do %>
             <input
               type="checkbox"
               name="seasons[]"
@@ -123,7 +115,7 @@ defmodule MswWeb.Components do
 
   attr :killers, :list, default: []
   attr :guess, :boolean, default: nil
-  attr :for, :any, default: nil
+  attr :for, Msw.Episode, default: nil
 
   def killer_chooser(assigns) do
     ~H"""
@@ -136,15 +128,15 @@ defmodule MswWeb.Components do
         cta_label="Try another episode"
         message="Bingo!"
       />
-      <label :for={{id, name, _episode_id, picture} <- @killers} for={"k#{id}"}>
+      <label :for={{id, killer} <- @killers} for={"k#{id}"}>
         <div
           class="KillerChooser-picture"
-          style={"background-image: url('data:image/jpeg;base64,#{picture}')"}
+          style={"background-image: url('data:image/jpeg;base64,#{killer.picture64}')"}
         />
-        <span class="KillerChooser-text"><%= name %></span>
+        <span class="KillerChooser-text"><%= killer.name %></span>
         <input id={"k#{id}"} name="guessed" value={id} type="radio" />
       </label>
-      <input type="hidden" value={@for} name="episode" />
+      <input type="hidden" value={@for.ref} name="episode" />
     </form>
     """
   end

@@ -12,7 +12,7 @@ defmodule MswWeb.Liveviews.Episodes do
           q: "",
           seasons: []
         },
-        all_seasons: Msw.DB.fetch_all(:seasons),
+        seasons: Msw.DB.fetch_all(:seasons),
         filtered: Msw.DB.fetch_all(:episodes),
         killer: nil,
         loading: true
@@ -25,21 +25,12 @@ defmodule MswWeb.Liveviews.Episodes do
     ~H"""
     <MswWeb.Components.filters
       loading={@loading}
-      seasons={@all_seasons}
+      seasons={@seasons}
       selected_seasons={@filters.seasons}
       q={@filters.q}
     />
     <section class="Episodes">
-      <MswWeb.Components.episode
-        :for={{id, n, t, pl, po, sid} <- @filtered}
-        id={id}
-        title={t}
-        poster={po}
-        plot={pl}
-        number={n}
-        season_id={sid}
-        killer={@killer}
-      />
+      <MswWeb.Components.episode :for={{_, episode} <- @filtered} episode={episode} killer={@killer} />
     </section>
     """
   end
@@ -66,8 +57,9 @@ defmodule MswWeb.Liveviews.Episodes do
      |> push_patch(to: ~p"/?#{filters}")}
   end
 
-  def handle_event("reveal", %{"value" => episode_id}, socket) do
-    {:noreply, assign(socket, killer: Msw.DB.killer_of(episode_id))}
+  def handle_event("reveal", %{"value" => episode_ref}, socket) do
+    {_, killer} = Msw.DB.killer_of(episode_ref)
+    {:noreply, assign(socket, killer: killer)}
   end
 
   def handle_event("unreveal", _, socket) do

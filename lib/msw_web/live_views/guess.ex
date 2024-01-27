@@ -9,13 +9,12 @@ defmodule MswWeb.Liveviews.Guess do
     if connected?(socket) do
       {:ok, assign_random_episode_and_killers(socket)}
     else
-      {:ok, socket |> assign(episode_id: nil, guess: nil)}
+      {:ok, socket |> assign(episode: nil, guess: nil)}
     end
   end
 
-  def handle_event("guessed", %{"guessed" => killer_id, "episode" => eid}, socket) do
-    episode_id = Msw.DB.lookup(:killers, killer_id, 3)
-    {:noreply, assign(socket, :guess, "#{episode_id}" == eid)}
+  def handle_event("guessed", %{"guessed" => killer_id, "episode" => episode_id}, socket) do
+    {:noreply, assign(socket, :guess, episode_id == killer_id)}
   end
 
   def handle_event("again", %{"value" => "guess"}, socket) do
@@ -29,18 +28,10 @@ defmodule MswWeb.Liveviews.Guess do
   def render(assigns) do
     ~H"""
     <section class="GuessEpisode">
-      <%= if @episode_id do %>
+      <%= if @episode do %>
         <h3 class="GuessEpisode-title">Guess the killer of this episode!</h3>
-        <MswWeb.Components.episode
-          id={@episode_id}
-          title={@title}
-          poster={@poster}
-          plot={@plot}
-          number={@number}
-          season_id={@season_id}
-          revealable={false}
-        />
-        <MswWeb.Components.killer_chooser killers={@killers} guess={@guess} for={@episode_id} />
+        <MswWeb.Components.episode episode={@episode} revealable={false} />
+        <MswWeb.Components.killer_chooser killers={@killers} guess={@guess} for={@episode} />
         <p class="GuessEpisode-study">
           Let's study! <.link navigate={~p"/"}>Browse the episodes</.link>
         </p>
@@ -52,17 +43,12 @@ defmodule MswWeb.Liveviews.Guess do
   end
 
   defp assign_random_episode_and_killers(socket) do
-    [{episode_id, number, title, plot, poster, season_id}] = Msw.DB.random(:episodes)
-    killer = Msw.DB.killer_of(episode_id)
+    [{_, episode}] = Msw.DB.random(:episodes)
+    killer = Msw.DB.killer_of(episode.ref)
 
     assign(
       socket,
-      episode_id: episode_id,
-      number: number,
-      title: title,
-      plot: plot,
-      poster: poster,
-      season_id: season_id,
+      episode: episode,
       killers: [killer | Msw.DB.random(:killers, 3)] |> Enum.shuffle(),
       guess: nil
     )

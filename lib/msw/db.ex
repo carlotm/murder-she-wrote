@@ -2,21 +2,17 @@ defmodule Msw.DB do
   use GenServer
 
   @name __MODULE__
-  @fields_to_int ["id", "episode_id"]
-  @data %{
-    seasons: ["id", "number"],
-    episodes: ["id", "number", "title", "plot", "poster", "season_id"],
-    killers: ["id", "name", "episode_id", "picture64"]
-  }
+  @tables [:seasons, :killers, :episodes]
 
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: @name)
 
   def init(_) do
-    Enum.each(@data, fn {k, _} ->
-      :ets.new(k, [:ordered_set, :protected, :named_table])
+    @tables
+    |> Enum.each(fn table ->
+      :ets.new(table, [:ordered_set, :protected, :named_table])
     end)
 
-    {:ok, @data, {:continue, :load}}
+    {:ok, @tables, {:continue, :load}}
   end
 
   def fetch_all(table) do
@@ -26,8 +22,8 @@ defmodule Msw.DB do
   def filter_episodes(filters \\ %{}) do
     :episodes
     |> :ets.tab2list()
-    |> Enum.filter(fn {_id, _number, title, _plot, _poster, season_id} ->
-      by_season(filters, season_id) and by_title(filters, title)
+    |> Enum.filter(fn {_id, episode} ->
+      by_season(filters, episode.season_id) and by_title(filters, episode.title)
     end)
   end
 
@@ -37,17 +33,14 @@ defmodule Msw.DB do
     |> Enum.take_random(n)
   end
 
-  def killer_of(episode_id) do
-    [killer] =
-      :ets.select(:killers, [
-        {{:_, :_, :"$1", :_}, [{:==, :"$1", {:const, episode_id}}], [:"$_"]}
-      ])
-
+  def killer_of(ref) do
+    [killer] = :ets.lookup(:killers, ref)
     killer
   end
 
   def lookup(table, k, pos \\ -1) when is_binary(k) do
     k = String.to_integer(k)
+
     case pos do
       -1 -> :ets.lookup(table, k)
       n -> :ets.lookup_element(table, k, n)
@@ -63,24 +56,22 @@ defmodule Msw.DB do
     {:noreply, tables}
   end
 
-  defp load({table, fields}) do
+  defp load(table) do
     Application.app_dir(:msw, "priv/data/#{Atom.to_string(table)}.csv")
     |> File.stream!()
     |> CSV.decode!(headers: true)
-    |> Enum.map(&csv_row_to_tuple(&1, fields))
+    |> Enum.map(&csv_row_to_tuple(&1, table))
     |> then(&:ets.insert(table, &1))
   end
 
-  defp csv_row_to_tuple(row, fields) do
-    Enum.reduce(fields, {}, fn
-      field, acc when field in @fields_to_int ->
-        {n, _} = Map.get(row, field) |> Integer.parse()
-        Tuple.append(acc, n)
+  defp csv_row_to_tuple(row, :episodes),
+    do: Msw.Episode.decode(row)
 
-      field, acc ->
-        Tuple.append(acc, Map.get(row, field))
-    end)
-  end
+  defp csv_row_to_tuple(row, :seasons),
+    do: Msw.Season.decode(row)
+
+  defp csv_row_to_tuple(row, :killers),
+    do: Msw.Killer.decode(row)
 
   defp norm(q), do: q |> String.trim() |> String.downcase()
 
